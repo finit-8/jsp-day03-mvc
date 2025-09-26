@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product">
+   <insert id="insert" parameterType="ProductVO">		<!-- confit.xml에서 입력한 코드로 com.app.vo.ProductVO대신 ProductVO로 처리가능 -->
+      INSERT INTO TBL_PRODUCT(ID, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_STOCK)
+      VALUES(SEQ_PRODUCT.NEXTVAL, #{productName}, #{productPrice}, #{productStock})
+   </insert>
+   
+   <select id="selectAll" resultType="ProductVO">
+	   	SELECT ID, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_STOCK
+	   	FROM TBL_PRODUCT
+	   	ORDER BY ID ASC
+   </select>
+   
+   <select id="select" parameterType="Long" resultType="ProductVO">
+   		SELECT ID, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_STOCK
+		FROM TBL_PRODUCT 
+		WHERE ID = #{id}
+   </select>
+   
+   <update id="update" parameterType="ProductVO">							
+   		UPDATE TBL_PRODUCT 						<!-- 입력값으로 DB수정하기 위해 java의 카멜표기법으로 바꾸고 세미콜론 지워서 java에 복붙. -->	
+		SET 									<!-- 이거 복붙해서 넣고 QA해야됨 단위테스트 -->
+			PRODUCT_NAME = #{productName}, 
+			PRODUCT_PRICE = #{productPrice}, 
+			PRODUCT_STOCK = #{productStock}
+		WHERE ID = #{id}
+   </update>
+   
+   <delete id="delete" parameterType="Long">
+   		DELETE FROM TBL_PRODUCT
+		WHERE ID = #{id}
+   </delete>
+</mapper>

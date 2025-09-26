@@ -11,21 +11,21 @@ import com.app.Result;
 import com.app.dao.ProductDAO;
 import com.app.vo.ProductVO;
 
-public class ProductWriteOkController implements Action {			// Action인터페이스를 구현? 상속받은 클래스객체는 Action인터페이스에 있는 Result클래스를 무조건 객체생성 해야한다. 
+public class ProductUpdateOkController implements Action {
 
 	@Override
 	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		Result result = new Result();
-
-		// ProductWriteController에서 상품등록하면 ProductName Price Stock을 줬으니까 받을 준비한다.
+		
+		// 화면(jsp서블릿)에서 update완료 누르면 업데이트 된 데이터가 오니까 받을 준비
 		ProductDAO productDAO = new ProductDAO();
 		ProductVO productVO = new ProductVO();
+		productVO.setId(Long.parseLong(req.getParameter("id")));
 		productVO.setProductName(req.getParameter("productName"));
 		productVO.setProductPrice(Integer.parseInt(req.getParameter("productPrice")));
 		productVO.setProductStock(Integer.parseInt(req.getParameter("productStock")));
 		
-		// 받은걸 DB에 insert한다.
-		productDAO.insert(productVO);
+		productDAO.update(productVO);
 		
 		result.setRedirect(true);
 		result.setPath("list.product");
